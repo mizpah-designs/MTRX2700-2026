@@ -13,10 +13,32 @@
 
 @ specific base address for the desired UART to use
 @  find this in the peripheral register memory boundary in the big manual
-.equ UART, 0x40013800
 
-@ specific bit to enable this UART
-.equ UART_EN, 14
+@ USART1
+@.equ UART, 0x40013800 @USART1
+@.equ UART_EN, 14 @ specific bit to enable this UART
+@.equ APBENR, APB2ENR
+@.equ MODER_CLEAR_MASK, (0xF << 8)
+@.equ MODER_ALT_MASK, (0xA << 8)
+@.equ AFRREG, AFRL
+@.equ AFR_CLEAR_MASK, (0xFF << 16)
+@.equ AFR_SET_MASK, (0x77 << 16)
+
+@ USART3
+.equ UART, 0x40004800 @USART3
+.equ UART_EN, 18 @ specific bit to enable this UART
+.equ APBENR, APB1ENR
+.equ MODER_CLEAR_MASK, (0xF << 20)
+.equ MODER_ALT_MASK, (0xA << 20)
+.equ AFRREG, AFRH
+.equ AFR_CLEAR_MASK, (0xFF << 8)
+.equ AFR_SET_MASK, (0x77 << 8)
+
+@ BAUD RATE
+@.equ BAUD_RATE, 0x43
+@.equ BAUD_RATE, 833 @ 9600 Baud
+.equ BAUD_RATE, 208 @ 38400 Baud
+
 
 @ register addresses and offsets for general UARTs
 .equ USART_CR1, 0x00

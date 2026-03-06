@@ -2,6 +2,9 @@
 .thumb
 
 .global main
+.thumb_func
+
+.type main, %function
 
 #include "initialise.s"
 
@@ -19,7 +22,7 @@ incoming_buffer: .space 62
 incoming_counter: .byte 62
 
 @ Define a string
-tx_string: .asciz "Walnut is a beautiful cat\r\n"
+tx_string: .asciz "Test Test\r\n"
 @ one way to know the length of the string is to just define it as a variable
 tx_length: .byte 27
 
@@ -52,11 +55,11 @@ main:
 	LDRB R7, [R7]
 
 	@ Keep a pointer that counts how many bytes have been received
-	MOV R8, #0x00
+	LDR R8, =0x00
 
 
 @ continue reading forever (NOTE: eventually it will run out of memory as we don't have a big buffer)
-loop_forever:
+read_loop:
 
 	LDR R0, =UART @ the base address for the register to set up UART
 	LDR R1, [R0, USART_ISR] @ load the status of the UART
@@ -69,7 +72,7 @@ loop_forever:
 	TST R1, 1 << UART_RXNE @ 'AND' the current status with the bit mask that we are interested in
 							  @ NOTE, the ANDS is used so that if the result is '0' the z register flag is set
 
-	BEQ loop_forever @ loop back to check status again if the flag indicates there is no byte waiting
+	BEQ read_loop @ loop back to check status again if the flag indicates there is no byte waiting
 
 	LDRB R3, [R0, USART_RDR] @ load the lowest byte (RDR bits [0:7] for an 8 bit read)
 	STRB R3, [R6, R8]
@@ -77,7 +80,7 @@ loop_forever:
 
 	CMP R7, R8
 	BGT no_reset
-	MOV R8, #0
+	LDR R8, =0x00
 
 
 no_reset:
@@ -87,7 +90,7 @@ no_reset:
 	ORR R1, 1 << UART_RXFRQ
 	STR R1, [R0, USART_RQR]
 
-	BGT loop_forever
+	BGT read_loop
 
 
 clear_error:
@@ -96,7 +99,7 @@ clear_error:
 	LDR R1, [R0, USART_ICR]
 	ORR R1, 1 << UART_ORECF | 1 << UART_FECF @ clear the flags (by setting flags to 1)
 	STR R1, [R0, USART_ICR]
-	B loop_forever
+	B read_loop
 
 
 tx_loop:
@@ -126,31 +129,25 @@ tx_uart:
 	LDRB R5, [R3], #1
 	STRB R5, [R0, USART_TDR]
 
-	@ note the use of the S on the end of the SUBS, this means that the register flags are set
-	@ and this subtraction can be used to make a branch
-	SUBS R4, #1
+	CMP R5, #0 @ look for the end of the string
+	BEQ delay_loop
 
 	@ keep looping while there are more characters to send
-	BGT tx_uart
-
-	@ make a delay before sending again
-	BL delay_loop
-
-	@ loop back to the start
-	B tx_loop
-
+	B tx_uart
 
 @ a very simple delay
 @ you will need to find better ways of doing this
 delay_loop:
-	LDR R9, =0xfffff
+	LDR R9, =0x7fff
 
 delay_inner:
 	@ notice the SUB has an S on the end, this means it alters the condition register
 	@ and can be used to make a branching decision.
 	SUBS R9, #1
 	BGT delay_inner
-	BX LR @ return from function call
+
+	@ loop back to the start
+	B tx_loop
 
 
 

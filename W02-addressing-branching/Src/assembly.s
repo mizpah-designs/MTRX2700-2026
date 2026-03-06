@@ -4,6 +4,9 @@
 #include "initialise.s"
 
 .global main
+.thumb_func
+
+.type main, %function
 
 
 .data
@@ -130,7 +133,7 @@ perform_subroutine:
 next_program:
 	LDR R0, =1
 	LDR R1, =2
-	CMP R1, R0  @ uncomment to show the difference in the
+	@CMP R1, R0  @ uncomment to show the difference in the
 				 @ flags
 	CMP R0, R1
 	@ branch greater or equal is inverse of less than

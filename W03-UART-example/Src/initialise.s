@@ -32,12 +32,17 @@ enable_uart:
 	LDR R0, =GPIOC
 
 	@ set the alternate function for the UART pins (what ever you have selected)
-	LDR R1, =0x77
-	STRB R1, [R0, AFRL + 2]
+	@LDR R1, [R0, AFRL]
+	LDR R1, [R0, AFRREG]
+	BIC R1, R1, AFR_CLEAR_MASK
+	ORR R1, R1, AFR_SET_MASK
+	@STR R1, [R0, AFRL]
+	STR R1, [R0, AFRREG]
 
 	@ modify the mode of the GPIO pins you want to use to enable 'alternate function mode'
 	LDR R1, [R0, GPIO_MODER]
-	ORR R1, 0xA00 @ Mask for pins to change to 'alternate function mode'
+	BIC R1, R1, MODER_CLEAR_MASK
+	ORR R1, MODER_ALT_MASK @ Mask for pins to change to 'alternate function mode'
 	STR R1, [R0, GPIO_MODER]
 
 	@ modify the speed of the GPIO pins you want to use to enable 'high speed'
@@ -49,12 +54,12 @@ enable_uart:
 	@ Note: this might be in APB1ENR or APB2ENR
 	@ you can find this out by looking in the datasheet
 	LDR R0, =RCC @ the base address for the register to turn clocks on/off
-	LDR R1, [R0, #APB2ENR] @ load the original value from the enable register
+	LDR R1, [R0, #APBENR] @ load the original value from the enable register
 	ORR R1, 1 << UART_EN  @ apply the bit mask to the previous values of the enable the UART
-	STR R1, [R0, #APB2ENR] @ store the modified enable register values back to RCC
+	STR R1, [R0, #APBENR] @ store the modified enable register values back to RCC
 
 	@ this is the baud rate
-	MOV R1, #0x46 @ from our earlier calculations (for 8MHz), store this in register R1
+	MOV R1, BAUD_RATE @ from our earlier calculations (for 8MHz), store this in register R1
 	LDR R0, =UART @ the base address for the register to turn clocks on/off
 	STRH R1, [R0, #USART_BRR] @ store this value directly in the first half word (16 bits) of
 							  	 @ the baud rate register

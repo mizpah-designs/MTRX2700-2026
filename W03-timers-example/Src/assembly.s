@@ -4,7 +4,9 @@
 #include "initialise.s"
 
 .global main
+.thumb_func
 
+.type main, %function
 
 .data
 @ define variables

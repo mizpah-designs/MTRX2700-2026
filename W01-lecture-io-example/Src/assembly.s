@@ -30,7 +30,7 @@ main:
 	BL initialise_discovery_board
 
 	@ store the current light pattern (binary mask) in R4
-	LDR R4, =0b00110011 @ load a pattern for the set of LEDs (every second one is on)
+	LDR R4, =0b00001111 @ load a pattern for the set of LEDs (every second one is on)
 
 @ 	Look at the GPIOE offset ODR, display as hex, then as binary. Look at the manual page 239
 
