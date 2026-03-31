@@ -61,13 +61,22 @@ uint32_t function(uint32_t variable) {
 	return variable + 1;
 }
 
+uint32_t function_ptr(uint32_t *variable) {
+	*variable = *variable + 1;
+
+	return 1;
+}
+
 
 int main(void)
 {
 	volatile uint32_t x = 0;
 
 	for (uint8_t i = 0; i < 5; i++) {
-		x = function_struct(x);
+		//x = function_struct(x);
+		//x = function(x);
+		x = function_1();
+		//function_ptr(&x);
 	}
 
     /* Loop forever */

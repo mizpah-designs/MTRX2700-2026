@@ -16,10 +16,10 @@
 @ can allocate as an array
 @incoming_buffer: .byte 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 @ or allocate just as a block of space with this number of bytes
-incoming_buffer: .space 62
+incoming_buffer: .space 255
 
 @ One strategy is to keep a variable that lets you know the size of the buffer.
-incoming_counter: .byte 62
+incoming_counter: .byte 255
 
 @ Define a string
 tx_string: .asciz "Test Test\r\n"

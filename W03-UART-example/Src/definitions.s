@@ -15,24 +15,24 @@
 @  find this in the peripheral register memory boundary in the big manual
 
 @ USART1
-@.equ UART, 0x40013800 @USART1
-@.equ UART_EN, 14 @ specific bit to enable this UART
-@.equ APBENR, APB2ENR
-@.equ MODER_CLEAR_MASK, (0xF << 8)
-@.equ MODER_ALT_MASK, (0xA << 8)
-@.equ AFRREG, AFRL
-@.equ AFR_CLEAR_MASK, (0xFF << 16)
-@.equ AFR_SET_MASK, (0x77 << 16)
+.equ UART, 0x40013800 @USART1
+.equ UART_EN, 14 @ specific bit to enable this UART
+.equ APBENR, APB2ENR
+.equ MODER_CLEAR_MASK, (0xF << 8)
+.equ MODER_ALT_MASK, (0xA << 8)
+.equ AFRREG, AFRL
+.equ AFR_CLEAR_MASK, (0xFF << 16)
+.equ AFR_SET_MASK, (0x77 << 16)
 
 @ USART3
-.equ UART, 0x40004800 @USART3
-.equ UART_EN, 18 @ specific bit to enable this UART
-.equ APBENR, APB1ENR
-.equ MODER_CLEAR_MASK, (0xF << 20)
-.equ MODER_ALT_MASK, (0xA << 20)
-.equ AFRREG, AFRH
-.equ AFR_CLEAR_MASK, (0xFF << 8)
-.equ AFR_SET_MASK, (0x77 << 8)
+@.equ UART, 0x40004800 @USART3
+@.equ UART_EN, 18 @ specific bit to enable this UART
+@.equ APBENR, APB1ENR
+@.equ MODER_CLEAR_MASK, (0xF << 20)
+@.equ MODER_ALT_MASK, (0xA << 20)
+@.equ AFRREG, AFRH
+@.equ AFR_CLEAR_MASK, (0xFF << 8)
+@.equ AFR_SET_MASK, (0x77 << 8)
 
 @ BAUD RATE
 @.equ BAUD_RATE, 0x43

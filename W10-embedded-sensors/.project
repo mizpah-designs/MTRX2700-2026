@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>embedded-sensors</name>
+	<name>W10-embedded-sensors</name>
 	<comment></comment>
 	<projects>
 		<project>STMF3disco-BSP</project>
